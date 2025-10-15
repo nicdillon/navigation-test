@@ -10,8 +10,12 @@ export default function CounterButton() {
 
   // should refresh the page when navigating back to it via browser back/forward buttons
   useEffect(() => {
-    const onShow = (e: PageTransitionEvent) => { if (e.persisted) router.refresh() }
-    addEventListener('pageshow', onShow); return () => removeEventListener('pageshow', onShow)
+    const onShow = (e: PageTransitionEvent) => {
+      if (e.persisted) router.refresh()
+      console.log('pageshow event', e);
+    }
+    addEventListener('pageshow', onShow);
+    return () => removeEventListener('pageshow', onShow)
   }, [router])
 
   return (
