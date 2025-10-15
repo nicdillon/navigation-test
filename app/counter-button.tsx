@@ -8,14 +8,39 @@ export default function CounterButton() {
 
   const router = useRouter()
 
-  // should refresh the page when navigating back to it via browser back/forward buttons
+  // 1️⃣ Handle browser back/forward cache (bfcache) restores
   useEffect(() => {
     const onShow = (e: PageTransitionEvent) => {
-      if (e.persisted) router.refresh()
-      console.log('pageshow event', e);
+      console.log('[pageshow] fired:', e.persisted ? 'from bfcache' : 'normal load')
+      if (e.persisted) {
+        console.log('[pageshow] persisted=true → calling router.refresh()')
+        router.refresh()
+      }
     }
-    addEventListener('pageshow', onShow);
-    return () => removeEventListener('pageshow', onShow)
+
+    window.addEventListener('pageshow', onShow)
+    console.log('[pageshow] listener attached')
+
+    return () => {
+      window.removeEventListener('pageshow', onShow)
+      console.log('[pageshow] listener removed')
+    }
+  }, [router])
+
+  // 2️⃣ Handle Next.js Router Cache reuse via client-side back/forward (SPA)
+  useEffect(() => {
+    const onPopState = () => {
+      console.log('[popstate] fired → calling router.refresh()')
+      router.refresh()
+    }
+
+    window.addEventListener('popstate', onPopState)
+    console.log('[popstate] listener attached')
+
+    return () => {
+      window.removeEventListener('popstate', onPopState)
+      console.log('[popstate] listener removed')
+    }
   }, [router])
 
   return (
