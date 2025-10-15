@@ -1,8 +1,6 @@
 import { headers } from 'next/headers'
 import CounterButton from './counter-button'
 import Link from 'next/link'
-import { useEffect } from 'react'
-
 
 async function getCurrentTime() {
   // Server-side function that returns the current time
@@ -24,7 +22,6 @@ export default async function Home() {
   const headersList = await headers()
 
   const time = await getCurrentTime()
-
 
   return (
     <main>
