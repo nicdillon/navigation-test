@@ -1,3 +1,5 @@
+// app/page.tsx
+
 import { headers } from 'next/headers'
 import CounterButton from './counter-button'
 import Link from 'next/link'
@@ -44,6 +46,7 @@ export default async function Home() {
       <nav style={{ marginTop: '20px' }}>
         <Link
           href="/about"
+          prefetch={false}
           style={{
             padding: '10px 20px',
             backgroundColor: '#4caf50',

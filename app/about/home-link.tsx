@@ -10,7 +10,7 @@ interface HomeLinkProps {
 export default function HomeLink({ children, style }: HomeLinkProps) {
 
   return (
-    <Link href="/"  style={style}>
+    <Link href="/"  style={style} prefetch={false}>
       {children}
     </Link>
   )

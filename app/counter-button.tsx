@@ -1,47 +1,9 @@
 'use client'
 
-import { useEffect, useState } from 'react'
-import { useRouter } from 'next/navigation'
+import { useState } from 'react'
 
 export default function CounterButton() {
   const [count, setCount] = useState(0)
-
-  const router = useRouter()
-
-  // 1️⃣ Handle browser back/forward cache (bfcache) restores
-  useEffect(() => {
-    const onShow = (e: PageTransitionEvent) => {
-      console.log('[pageshow] fired:', e.persisted ? 'from bfcache' : 'normal load')
-      if (e.persisted) {
-        console.log('[pageshow] persisted=true → calling router.refresh()')
-        router.refresh()
-      }
-    }
-
-    window.addEventListener('pageshow', onShow)
-    console.log('[pageshow] listener attached')
-
-    return () => {
-      window.removeEventListener('pageshow', onShow)
-      console.log('[pageshow] listener removed')
-    }
-  }, [router])
-
-  // 2️⃣ Handle Next.js Router Cache reuse via client-side back/forward (SPA)
-  useEffect(() => {
-    const onPopState = () => {
-      console.log('[popstate] fired → calling router.refresh()')
-      router.refresh()
-    }
-
-    window.addEventListener('popstate', onPopState)
-    console.log('[popstate] listener attached')
-
-    return () => {
-      window.removeEventListener('popstate', onPopState)
-      console.log('[popstate] listener removed')
-    }
-  }, [router])
 
   return (
     <div style={{
