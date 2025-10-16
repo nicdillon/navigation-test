@@ -1,7 +1,6 @@
 // app/page.tsx
 
 import { headers } from 'next/headers'
-import CounterButton from './counter-button'
 import Link from 'next/link'
 
 async function getCurrentTime() {
@@ -40,9 +39,6 @@ export default async function Home() {
       <p style={{ marginTop: '20px', color: '#666' }}>
         Refresh the page to see the time update (no caching)
       </p>
-
-      <CounterButton />
-
       <nav style={{ marginTop: '20px' }}>
         <Link
           href="/about"
