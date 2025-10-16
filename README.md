@@ -90,15 +90,10 @@ useEffect(() => {
 
 ```
 app/
-├── layout.tsx                    # Root layout with back/forward navigation refresh logic
-├── page.tsx                      # Root page displaying server timestamp
-├── about/
-│   └── page.tsx                  # About page for navigation testing
-├── cart/
-│   ├── page.tsx                  # Cart page (server component with refresh logic)
-│   └── back-navigation-refresh.tsx  # Invisible client component handling cart refresh
-└── pdp/
-    └── page.tsx                  # Product page with add-to-cart action
+├── layout.tsx           # Root layout with back/forward navigation refresh logic
+├── page.tsx             # Root page displaying server timestamp
+└── about/
+    └── page.tsx         # About page for navigation testing
 ```
 
 ## Testing the Implementation
@@ -108,19 +103,13 @@ app/
    npm run dev
    ```
 
-2. **Test root page refresh:**
-   - Visit the root page (`/`) and note the server timestamp
-   - Click "Go to About Page"
-   - Click browser back button
-   - Timestamp should update (not cached)
-
-3. **Test cart page refresh:**
-   - Visit the PDP page (`/pdp`)
-   - Add items to cart
-   - Navigate to cart page (`/cart`)
-   - Go back to PDP and add more items
-   - Use browser back button to return to cart
-   - Cart should show updated data (not cached)
+2. **Test the back/forward navigation refresh:**
+   - Visit the root page (`http://localhost:3000`) and note the server timestamp
+   - Click "Go to About Page" link
+   - Click the browser back button to return to root
+   - The timestamp should update (indicating the page was refreshed, not served from cache)
+   - Navigate forward to About page using browser forward button
+   - Navigate back to root again - timestamp should update again
 
 ## Development
 
