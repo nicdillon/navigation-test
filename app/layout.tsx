@@ -6,57 +6,36 @@ import { useRouter, usePathname } from 'next/navigation'
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   const router = useRouter()
   const pathname = usePathname()
-  const lastRefresh = useRef(0)
   const wasPopState = useRef(false)
   const prevPathname = useRef(pathname)
 
-  const safeRefresh = () => {
-    const now = Date.now()
-    if (now - lastRefresh.current > 100) {
-      lastRefresh.current = now
-      console.log('[refresh] calling router.refresh()')
-      router.refresh()
-    } else {
-      console.log('[refresh] skipped (debounced)')
-    }
-  }
-
-  // Listen for back/forward navigation
   useEffect(() => {
-    const onShow = (e: PageTransitionEvent) => {
-      const currentPath = window.location.pathname
-      console.log('[pageshow] fired:', e.persisted ? 'from bfcache' : 'normal show', 'path:', currentPath)
-      if (e.persisted && currentPath === '/') {
-        console.log('[pageshow] persisted → refresh')
-        safeRefresh()
-      }
-    }
-
     const onPopState = () => {
-      console.log('[popstate] fired, marking for refresh check')
       wasPopState.current = true
     }
 
-    window.addEventListener('pageshow', onShow)
+    const onPageShow = (e: PageTransitionEvent) => {
+      if (e.persisted && pathname === '/') {
+        router.refresh()
+      }
+    }
+
     window.addEventListener('popstate', onPopState)
-    console.log('[listeners] attached (root, once)')
+    window.addEventListener('pageshow', onPageShow)
 
     return () => {
-      window.removeEventListener('pageshow', onShow)
       window.removeEventListener('popstate', onPopState)
-      console.log('[listeners] removed (root, unmount)')
+      window.removeEventListener('pageshow', onPageShow)
     }
   }, [])
 
-  // Refresh when navigating to root via back/forward
   useEffect(() => {
     if (pathname === '/' && prevPathname.current !== '/' && wasPopState.current) {
-      console.log('[pathname effect] navigated to / via popstate → refresh')
-      safeRefresh()
+      router.refresh()
       wasPopState.current = false
     }
     prevPathname.current = pathname
-  }, [pathname]) 
+  }, [pathname, router]) 
 
   return (
     <html lang="en">
