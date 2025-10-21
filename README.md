@@ -126,22 +126,3 @@ npm run build
 # Start production server
 npm start
 ```
-
-## Tech Stack
-
-- Next.js 15 (App Router)
-- React 19
-- TypeScript
-- Node.js 18+
-
-## Key Configuration
-
-All pages use aggressive cache-busting configuration:
-
-```tsx
-export const dynamic = 'force-dynamic'
-export const fetchCache = 'force-no-store'
-export const revalidate = 0
-```
-
-This ensures data is always fetched fresh from the server, even on forward navigation.
